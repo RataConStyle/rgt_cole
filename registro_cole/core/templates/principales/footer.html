@@ -1,0 +1,20 @@
+{% load static %}
+
+
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'js/es-ES.js' %}"></script>
+<script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+<script src="{% static 'js/jquery-migrate-3.4.1.min.js' %}"></script>
+<script src="{% static 'js/sweetalert2@11.js' %}"></script>
+<script src="{% static 'js/modulos/asistencias.js' %}"></script>
+<script src="{% static 'DataTables/datatables.min.js' %}"></script>
+<script src="{% static 'js/quagga.js' %}"></script>
+
+<script>
+    const url = "{% url 'verAsistencias' %}";
+    const url2 = "{% url 'registroAlumnos' %}";
+    const url3 = "{% url 'editAlumno' 0 %}";
+    const url4 = "{% url 'deleteAlumno' 0 %}";
+    const url5 = "{% url 'asistenciasAlumno' 0 %}";
+    
+</script>
