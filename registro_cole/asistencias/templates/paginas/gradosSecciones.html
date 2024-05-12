@@ -1,0 +1,219 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titulo }}</title>
+    {% include 'principales/head.html' %}
+</head>
+
+<body>
+    <section>
+        <div class="dashboard-wrapper">
+            <div class="container-fluid  dashboard-content">
+                <!-- ============================================================== -->
+                <!-- pageheader -->
+                <!-- ============================================================== -->
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="page-header">
+                            <h2 class="pageheader-title">Buscar por grados y secciones</h2>
+                            <!-- Guia de archivo -->
+                            <!-- <div class="page-breadcrumb">
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a>
+                                        </li>
+                                        <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Tables</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Data Tables</li>
+                                    </ol>
+                                </nav>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="card">
+                            <h5 class="card-header">Muestra de datos</h5>
+                            <div class="card-body">
+                                <div class="row col-12 container mb-4">
+                                    <div class="col-3">
+                                        <label for="gradoSlc">Seleccionar grado</label>
+                                        <select name="gradoSlc" id="gradoSlc" class="form-select">
+                                            <option value="" selected>Seleccionar</option>
+                                            {% for grado in grados %}
+                                            <option value="{{ grado.id }}">{{ grado.nombre }}°</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col-3">
+                                        <label for="seccionSlc">Seleccionar seccion</label>
+                                        <select name="seccionSlc" id="seccionSlc" class="form-select">
+                                        </select>
+                                    </div>
+                                    <div class="col-3">
+                                        <button class="btn btn-danger btn-lg mt-3" id="eliminarT">Resetear todo</button>
+                                    </div>
+                                </div>
+                                <div class="table-responsive d-none" id="tablaGradosSecciones">
+                                    <table class="table table-striped table-hover" id="tblgradoSecciones">
+                                        <thead>
+                                            <th>Nombre Completo</th>
+                                            <th>Codigo</th>
+                                            <th>Grado</th>
+                                            <th>Seccion</th>
+                                            <th>Acciones</th>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </section>
+</body>
+
+<div class="modal fade" id="modalNuevo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="titleCabeza">Registro de nuevo alumno</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="registroAlumno" style="width: 100%; height: 100%;">
+                    {% csrf_token %}
+                    <input name="id" id="id" readonly class="d-none">
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="nombreAlumno" name="nombreAlumno" required
+                            placeholder="Nombre del alumno">
+                    </div>
+                    <div class="mb-3">
+                        <label for="apellidos" class="form-label">Apellidos</label>
+                        <input type="text" class="form-control" id="apellidosAlumno" name="apellidosAlumno" required
+                            placeholder="Apellidos del alumno">
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <div class="mb-3 w-100 container">
+                            <label for="gradoAlumno" class="form-label">Grado</label>
+                            <select class="form-select" id="gradoAlumno" name="gradoAlumno" required>
+                                <option value="">Selecciona</option>
+                                {% for grado in grados %}
+                                <option value="{{ grado.id }}">{{ grado.nombre }}°</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3 w-100 container">
+                            <label for="seccionAlumno" class="form-label">Seccion</label>
+                            <select class="form-select" id="seccionAlumno" name="seccionAlumno" required>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <button type="submit" class="btn btn-primary" id="btnDatos">Registrar</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalTomarAsis" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="titleCabeza">Asistencia del alumno</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <video id="miCanvas"></video>
+                <form id="asistenciaAlumno">
+                    {% csrf_token %}
+                    <input readonly class="d-none" id="id">
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Codigo del alumno</label>
+                        <input type="text" class="form-control" id="codigoAlumno" name="codigoAlumno"
+                            placeholder="Codigo del alumno" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre Completo</label>
+                        <input type="text" class="form-control" id="nombreCompletoA" name="nombreCompletoA"
+                            placeholder="Nombre del alumno" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <p class="h4">Datos del alumno</p>
+                        <div class="container" id="datosAlumno"></div>
+
+                    </div>
+                    <div class="mb-3 text-end">
+                        <button type="submit" class="btn btn-primary btn-lg" id="btnTomar">Asistio</button>
+                        <button type="button" class="btn btn-danger btn-lg" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalAsis" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Registro de asistencias de la semana</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body bg-dark">
+                <div class="container">
+                    <table class="table table-hover table-light striped" id="tblAsistencias">
+                        <thead>
+                            <th>Dia</th>
+                            <th>Asistio</th>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                    <div class="container">
+                        <p class="text-white fw-bold mt-3">Registro de asistencias del alumno hasta ahora</p>
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <p class="text-danger">Faltas: </p>
+                                <p class="text-danger text-center fw-bold" id="faltas"></p>
+                            </div>
+                            <div>
+                                <p class="text-warning">Tardanzas: </p>
+                                <p class="text-warning text-center fw-bold" id="tardanzas"></p>
+                            </div>
+                            <div>
+                                <p class="text-success">Asistencias: </p< /div>
+                                <p class="text-success text-center fw-bold" id="asistencias">
+                                    </p< /div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include 'principales/footer.html' %}
+
+    <script src="{% static 'js/modulos/gradosSecciones.js' %}"></script>
+
+</html>

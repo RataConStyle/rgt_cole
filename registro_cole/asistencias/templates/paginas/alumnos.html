@@ -46,7 +46,7 @@
                                     data-bs-target="#modalTomarAsis" id="nuevo" onclick="escanearCodigoDeBarras()">Tomar
                                     asistencia</button>
                                 <div class="table-responsive">
-                                    <table class="table table-striped table-hover" id="registroAsistencias">
+                                    <table class="table table-striped table-hover table-bordered" id="registroAsistencias">
                                         <thead>
                                             <th>#</th>
                                             <th>Nombre</th>
@@ -86,18 +86,18 @@
                     <div class="mb-3">
                         <label for="nombre" class="form-label">Nombre</label>
                         <input type="text" class="form-control" id="nombreAlumno" name="nombreAlumno"
-                            placeholder="Nombre del alumno">
+                            placeholder="Nombre del alumno" required>
                     </div>
                     <div class="mb-3">
                         <label for="apellidos" class="form-label">Apellidos</label>
                         <input type="text" class="form-control" id="apellidosAlumno" name="apellidosAlumno"
-                            placeholder="Apellidos del alumno">
+                            placeholder="Apellidos del alumno" required>
                     </div>
                     <div class="d-flex justify-content-between">
                         <div class="mb-3 w-100 container">
                             <label for="gradoAlumno" class="form-label">Grado</label>
-                            <select class="form-select" id="gradoAlumno" name="gradoAlumno">
-                                <option value="">Selecciona</option>
+                            <select class="form-select" id="gradoAlumno" name="gradoAlumno" required>
+                                <option value="" selected>Seleccionar</option>
                                 {% for grado in grados %}
                                 <option value="{{ grado.id }}">{{ grado.nombre }}°</option>
                                 {% endfor %}
@@ -105,7 +105,7 @@
                         </div>
                         <div class="mb-3 w-100 container">
                             <label for="seccionAlumno" class="form-label">Seccion</label>
-                            <select class="form-select" id="seccionAlumno" name="seccionAlumno">                                
+                            <select class="form-select" id="seccionAlumno" name="seccionAlumno" required>                                
                             </select>
                         </div>
                     </div>
@@ -169,7 +169,7 @@
             </div>
             <div class="modal-body bg-dark">
                 <div class="container">
-                    <table class="table table-hover table-dark striped" id="tblAsistencias">
+                    <table class="table table-hover table-light table-bordered border-3 striped" id="tblAsistencias">
                         <thead>
                             <th>Dia</th>
                             <th>Asistio</th>
@@ -210,6 +210,7 @@
 
 
     <script src="{% static 'js/modulos/tomarAsistencia.js' %}"></script>
+    <script src="{% static 'js/modulos/asistencias.js' %}"></script>
 
 
 </html>

@@ -7,7 +7,7 @@ import string
 from datetime import datetime, timedelta
 
 from django.core.exceptions import ObjectDoesNotExist
-
+from django.db import transaction
 
 # Create your views here.
 
@@ -98,6 +98,8 @@ def editarAlumno(request, idAlumno):
             t_alumno = Alumnos.objects.get(id=idAlumno)
             t_grado = Grado.objects.get(id=t_alumno.grado.id)
             t_seccion = Seccion.objects.get(id=t_alumno.seccion.id)
+            t_secciones_grado = Seccion.objects.filter(grado=t_grado).order_by('nombre')
+            t_secciones = [{'id' : registro.id, 'nombre' : registro.nombre} for registro in t_secciones_grado]
 
             data_alumno = {
                 'id': t_alumno.id,
@@ -106,7 +108,8 @@ def editarAlumno(request, idAlumno):
                 'grado' : t_grado.nombre,
                 'seccion' : t_seccion.nombre,
                 'grado_id' : t_grado.id,
-                'seccion_id' : t_seccion.id
+                'seccion_id' : t_seccion.id,
+                'secciones' : t_secciones
             }
 
             data = {
@@ -230,3 +233,43 @@ def get_secciones(request, gradoId):
             
         except Exception as e:
             return JsonResponse({'icono': False, 'error':str(e)})
+
+
+def get_grados_secciones(request):
+    
+    todos_grados = Grado.objects.all().order_by('nombre')
+    
+    grados = [{'id' : registro.id, 'nombre' : registro.nombre} for registro in todos_grados]
+    
+    contexto = {
+        'grados' : grados,
+        'titulo' : 'Secciones y grados'
+    }
+    
+    return render(request, "paginas/gradosSecciones.html", contexto)
+
+def get_alumnos_grados_secciones(request, gradoId, seccionId):
+    
+    try:
+        if request.method == 'GET':
+            
+            with transaction.atomic():
+                
+                grado_id = Grado.objects.get(id=gradoId)
+                seccion_id = Seccion.objects.get(id=seccionId)
+                
+                alumnos_g_s = Alumnos.objects.filter(grado = grado_id, seccion = seccion_id).order_by('apellidos')
+                
+                alumnos = [{'id': registro.id, 'nombre_completo' : registro.apellidos + ' ' + registro.nombre, 'codigo' : registro.id_unico,
+                            'grado' : registro.grado.nombre, 'seccion' : registro.seccion.nombre} for registro in alumnos_g_s]
+                
+                data = {
+                    'icono' : True,
+                    'alumnos' : alumnos,
+                }
+                
+                return JsonResponse(data)
+            
+    except Exception as e:
+        return JsonResponse({'icono' : False, 'msg' : str(e)})
+        

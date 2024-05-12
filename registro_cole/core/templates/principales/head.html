@@ -238,7 +238,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link {% if request.path == '/asistencias/' %}active{% endif %}" href="{% url 'alumnos' %}">
-                                    <i class="fa fa-fw fa-rocket"></i>Alumnos
+                                    <i class="fa fa-fw fa-users"></i>Alumnos
                                 </a>
                                 <!-- <div id="submenu-2" class="collapse submenu">
                                     <ul class="nav flex-column">
@@ -268,10 +268,9 @@
                                 </div> -->
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#" data-bs-toggle="collapse" aria-expanded="false"
-                                    data-bs-target="#submenu-3" aria-controls="submenu-3"><i
-                                        class="fas fa-fw fa-chart-pie"></i>Chart</a>
-                                <div id="submenu-3" class="collapse submenu">
+                                <a class="nav-link {% if request.path == '/asistencias/gradosSecciones/' %}active{% endif %}" href="{% url 'gradosSecciones' %}"><i
+                                        class="fas fa-fw fa-search"></i>Grados y secciones</a>
+                                <!-- <div id="submenu-3" class="collapse submenu">
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
                                             <a class="nav-link" href="pages/chart-c3.html">C3 Charts</a>
@@ -292,7 +291,7 @@
                                             <a class="nav-link" href="pages/chart-gauge.html">Guage</a>
                                         </li>
                                     </ul>
-                                </div>
+                                </div> -->
                             </li>
                             <li class="nav-item ">
                                 <a class="nav-link" href="#" data-bs-toggle="collapse" aria-expanded="false"

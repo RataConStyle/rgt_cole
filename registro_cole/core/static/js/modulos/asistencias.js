@@ -39,50 +39,71 @@ $(document).ready(function () {
         ],
         language,
         dom,
-        buttons
+        order: [[2, 'asc']]
     });
-})
 
-$('#seccionAlumno').prop('disabled', true);
+    var gradoId = $('#gradoAlumno').val();
 
-$('#gradoAlumno').change(function () {
-    var gradoId = $(this).val();
-    
-    // Limpia las opciones de la selección de sección
-    cargarSecciones(gradoId)
-});
+    // Llamar a la función cargarSecciones con el valor seleccionado
+    cargarSecciones(gradoId);
 
-$('#nuevo').on("click", function () {
-    frmAlumnos.reset();
-    modalNuevo.show();
-    titleModal.textContent = 'Nuevo alumno';
-    btnDatos.textContent = "Registrar"
-    $('#seccionAlumno').empty();
-})
+    $('#gradoAlumno').change(function () {
+        var gradoId = $(this).val();
 
-frmAlumnos.addEventListener('submit', function (e) {
-    e.preventDefault();
-    const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
-    let data = new FormData(this);
+        // Limpia las opciones de la selección de sección
+        cargarSecciones(gradoId)
+    });
 
-    data.append('csrfmiddlewaretoken', csrfToken);
+    frmAlumnos.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+        let data = new FormData(this);
 
-    const http = new XMLHttpRequest();
-    http.open("POST", url2, true);
-    http.send(data);
-    http.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log(this.responseText);
-            const res = JSON.parse(this.responseText);
-            if (res.icono == 'success') {
-                modalNuevo.hide();
-                tblAsistencias.ajax.reload();
-                frmAlumnos.reset();
+        data.append('csrfmiddlewaretoken', csrfToken);
+
+        const http = new XMLHttpRequest();
+        http.open("POST", url2, true);
+        http.send(data);
+        http.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                console.log(this.responseText);
+                const res = JSON.parse(this.responseText);
+                if (res.icono == 'success') {
+                    modalNuevo.hide();
+                    tblAsistencias.ajax.reload();
+                    frmAlumnos.reset();
+                }
+                console.log(this.responseText);
+                Swal.fire("Aviso", res.msg, res.icono);
             }
-            console.log(this.responseText);
-            Swal.fire("Aviso", res.msg, res.icono);
         }
-    }
+
+    })
+
+    $('#nuevo').on("click", function () {
+        frmAlumnos.reset();
+        modalNuevo.show();
+        titleModal.textContent = 'Nuevo alumno';
+        btnDatos.textContent = "Registrar"
+       
+
+        if ($('#gradoAlumno').val() == '') {
+            $('#seccionAlumno').prop('disabled', true);
+        }
+
+        $('#seccionAlumno').empty();
+
+    })
+    
+    $('#gradoAlumno').on("change", function () {
+        // Si el valor del grado no está vacío, habilita la selección de sección
+        if ($(this).val() !== '') {
+            $('#seccionAlumno').prop('disabled', false);
+        } else {
+            // Si el valor del grado está vacío, deshabilita la selección de sección y elimina las opciones
+            $('#seccionAlumno').prop('disabled', true).empty();
+        }
+    });
 
 })
 
@@ -101,8 +122,27 @@ function editarAlumno(idAlumno) {
                 document.querySelector('#nombreAlumno').value = res.alumno.nombre;
                 document.querySelector('#apellidosAlumno').value = res.alumno.apellidos;
                 $('#gradoAlumno').val(res.alumno.grado);
-                $('#seccionAlumno').append('<option value="' + res.alumno.seccion_id + '">' + res.alumno.seccion + '</option>');
+
                 gradoId = res.alumno.grado_id
+                seccion_id = res.alumno.seccion_id
+
+                $('#seccionAlumno').empty();
+
+                $('#seccionAlumno').prop('disabled', false);
+                // Si no se ha seleccionado ningún grado, bloquea la selección de sección
+                if (gradoId === '') {
+                    $('#seccionAlumno').prop('disabled', true);
+                    return;
+                }
+
+                res.alumno.secciones.forEach(seccion => {
+                    if (seccion.id === seccion_id) {
+                        $('#seccionAlumno').append('<option value="' + seccion.id + '" selected>' + seccion.nombre + '</option>');
+                    } else {
+                        $('#seccionAlumno').append('<option value="' + seccion.id + '">' + seccion.nombre + '</option>');
+                    }
+                });
+
 
 
                 titleModal.textContent = 'Editar Alumno';
@@ -217,13 +257,6 @@ function cargarSecciones(gradoId) {
     $('#seccionAlumno').empty();
 
     // Si no se ha seleccionado ningún grado, bloquea la selección de sección
-    if (gradoId === '') {
-        $('#seccionAlumno').prop('disabled', true);
-        return;
-    }
-
-    // Habilita la selección de sección
-    $('#seccionAlumno').prop('disabled', false);
 
     // Realiza una petición AJAX para obtener las secciones del grado seleccionado
     const urlServer = `../../asistencias/verSecciones/` + gradoId;

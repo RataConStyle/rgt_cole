@@ -241,42 +241,42 @@ let language = {
     }
 }
 
-let buttons = [{
-    extend: 'excelHtml5',
-    footer: true,
-    text: '<button class="bg-success"><i class="fas fa-file-excel"></i></button>'
-},
+// let buttons = [{
+//     extend: 'excelHtml5',
+//     footer: true,
+//     text: '<button class="bg-success"><i class="fas fa-file-excel"></i></button>'
+// },
 
-{
-    extend: 'pdfHtml5',
-    download: 'open',
-    footer: true,
-    text: '<button class="bg-danger"><i class="fas fa-file-pdf"></i></button>',
-    exportOptions: {
-        columns: [0, ':visible']
-    }
-},
-{
-    extend: 'copyHtml5',
-    footer: true,
-    text: '<button class="bg-primary"><i class="fas fa-copy"></i></button>',
-    exportOptions: {
-        columns: [0, ':visible']
-    }
-},
-{
-    extend: 'print',
-    footer: true,
-    text: '<button class="bg-dark"><i class="fas fa-print"></i></button>'
-},
-{
-    extend: 'csvHtml5',
-    footer: true,
-    filename: 'Export_File_csv',
-    text: '<button class="bg-success"><i class="fas fa-file-csv"></i></button>'
-}
+// {
+//     extend: 'pdfHtml5',
+//     download: 'open',
+//     footer: true,
+//     text: '<button class="bg-danger"><i class="fas fa-file-pdf"></i></button>',
+//     exportOptions: {
+//         columns: [0, ':visible']
+//     }
+// },
+// {
+//     extend: 'copyHtml5',
+//     footer: true,
+//     text: '<button class="bg-primary"><i class="fas fa-copy"></i></button>',
+//     exportOptions: {
+//         columns: [0, ':visible']
+//     }
+// },
+// {
+//     extend: 'print',
+//     footer: true,
+//     text: '<button class="bg-dark"><i class="fas fa-print"></i></button>'
+// },
+// {
+//     extend: 'csvHtml5',
+//     footer: true,
+//     filename: 'Export_File_csv',
+//     text: '<button class="bg-success"><i class="fas fa-file-csv"></i></button>'
+// }
 
-];
+// ];
 
 let dom = "<'row'<'col-sm-12'<'toolbar'<'col-sm-6'l><'col-sm-6 text-right'B>>f>>" +
 "<'row'<'col-sm-12'tr>>" +
