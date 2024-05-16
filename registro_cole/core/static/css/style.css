@@ -1049,6 +1049,19 @@ Fontawesome size
     font-size: 11px !important;
 }
 
+.fc-day[data-date="2024-05-15"] {
+    background-color: transparent !important;
+}
+
+.fc-toolbar-title,
+.fc-day-header {
+    font-size: 1.2em; /* Tamaño de letra deseado */
+}
+
+/* Aumentar tamaño de letras de los títulos de eventos */
+.fc-event-title {
+    font-size: 1.5em; /* Tamaño de letra deseado */
+}
 
 /*-----------------------
 Social Color

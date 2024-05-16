@@ -1,0 +1,98 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titulo }}</title>
+    {% include 'principales/head.html' %}
+</head>
+
+<body>
+    <section>
+        <div class="dashboard-wrapper">
+            <div class="container-fluid  dashboard-content">
+                <!-- ============================================================== -->
+                <!-- pageheader -->
+                <!-- ============================================================== -->
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="page-header">
+                            <h2 class="pageheader-title">Reportes importantes</h2>
+                            <!-- Guia de archivo -->
+                            <!-- <div class="page-breadcrumb">
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a>
+                                        </li>
+                                        <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Tables</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Data Tables</li>
+                                    </ol>
+                                </nav>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="card">
+                            <h5 class="card-header">Muestra de reportes</h5>
+                            <div class="card-body">
+                                <div class="container">
+                                    <form id="fromAlumnoReporte">
+                                        {% csrf_token %}
+                                        <div class="container-fluidr row">
+                                            <div class="col-2 mb-3">
+                                                <label for="slcGrado">Seleccionar el grado</label>
+                                                <select name="slcGrado" id="slcGrado" class="form-select">
+                                                    <option value="">Seleccionar</option>
+                                                    {% for grado in grados %}
+                                                    <option value="{{ grado.id }}">{{ grado.nombre }}°</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="col-4 mb-3">
+                                                <label for="slcSeccion">Seleccionar el seccion</label>
+                                                <select name="slcSeccion" id="slcSeccion" class="form-select">
+                                                </select>
+                                            </div>
+                                            <div class="col-4 mb-3">
+                                                <label for="slcAlumno">Seleccionar el alumno</label>
+                                                <select name="slcAlumno" id="slcAlumno" class="form-select">
+                                                </select>
+                                            </div>
+                                            <div class="col-2 mb-3 text-end">
+                                                <button class="btn-primary btn-lg mt-3 rounded-3" type="button">Mostrar</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="text-center col-12 mx-auto">
+                                    <div id="divCalendarioAnual">
+                                        
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </section>
+</body>
+
+{% include 'principales/footer.html' %}
+
+<script src="{% static 'js/modulos/reportes.js' %}"></script>
+<script src="{% static 'js/index.global.min.js' %}"></script>
+
+<script>
+     
+</script>
+
+</html>

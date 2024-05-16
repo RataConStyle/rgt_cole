@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
     <link rel="stylesheet" href="{% static '/css/style.css' %}">
     <link rel="stylesheet" href="{% static '/css/circular-std/style.css' %}">
+    <link rel="stylesheet" href="{% static '/css/select2.min.css' %}">
+    <link rel="stylesheet" href="{% static '/css/select2-bootstrap-5-theme.min.css' %}">
 </head>
 
 <body>
@@ -294,29 +296,7 @@
                                 </div> -->
                             </li>
                             <li class="nav-item ">
-                                <a class="nav-link" href="#" data-bs-toggle="collapse" aria-expanded="false"
-                                    data-bs-target="#submenu-4" aria-controls="submenu-4"><i
-                                        class="fab fa-fw fa-wpforms"></i>Forms</a>
-                                <div id="submenu-4" class="collapse submenu">
-                                    <ul class="nav flex-column">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="pages/form-elements.html">Form Elements</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="pages/form-validation.html">Parsely
-                                                Validations</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="pages/multiselect.html">Multiselect</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="pages/datepicker.html">Date Picker</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="pages/bootstrap-select.html">Bootstrap Select</a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <a class="nav-link {% if request.path == '/reportes/' %}active{% endif %}" href="{% url 'reportes' %}"><i class="fab fa-fw fa-wpforms"></i>Reportes importantes</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#" data-bs-toggle="collapse" aria-expanded="false"

@@ -22,6 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name="inicio"),
     path('asistencias/', include('asistencias.urls')),
+    path('reportes/', include('reportes.urls')),
     
     # path('asistencias/', views.alumnos, name="asistencias"),
     # path('registroAlumnos/', registroAlumno, name="registroAlumno"),
