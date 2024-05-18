@@ -270,6 +270,7 @@ def get_alumnos_grados_secciones(request, gradoId, seccionId):
                 
                 return JsonResponse(data)
             
+            
     except Exception as e:
         return JsonResponse({'icono' : False, 'msg' : str(e)})
         
