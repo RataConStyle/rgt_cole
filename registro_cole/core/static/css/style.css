@@ -1049,9 +1049,6 @@ Fontawesome size
     font-size: 11px !important;
 }
 
-.fc-day[data-date="2024-05-15"] {
-    background-color: transparent !important;
-}
 
 .fc-toolbar-title,
 .fc-day-header {

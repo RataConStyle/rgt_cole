@@ -9,6 +9,8 @@ const btnDatos = document.querySelector("#btnDatos")
 
 $(document).ready(function () {
 
+    
+
     $('#seccionSlc').prop('disabled', true).empty();
 
     $('#gradoSlc').change(function () {
@@ -25,11 +27,10 @@ $(document).ready(function () {
         // Si el valor del grado no está vacío, habilita la selección de sección
         if ($(this).val() !== '') {
             $('#seccionSlc').prop('disabled', false);
-            $('#tablaGradosSecciones').removeClass('d-none').addClass('d-block');
+            
         } else {
             // Si el valor del grado está vacío, deshabilita la selección de sección y elimina las opciones
             $('#seccionSlc').prop('disabled', true).empty();
-            $('#tablaGradosSecciones').removeClass('d-block').addClass('d-none');
         }
     });
 

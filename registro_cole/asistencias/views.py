@@ -7,7 +7,7 @@ import string
 from datetime import datetime, timedelta
 
 from django.core.exceptions import ObjectDoesNotExist
-from django.db import transaction
+from django.db import transaction, connection
 
 # Create your views here.
 

@@ -39,43 +39,71 @@
                         <div class="card">
                             <h5 class="card-header">Muestra de reportes</h5>
                             <div class="card-body">
-                                <div class="container">
-                                    <form id="fromAlumnoReporte">
-                                        {% csrf_token %}
-                                        <div class="container-fluidr row">
-                                            <div class="col-2 mb-3">
-                                                <label for="slcGrado">Seleccionar el grado</label>
-                                                <select name="slcGrado" id="slcGrado" class="form-select">
-                                                    <option value="">Seleccionar</option>
-                                                    {% for grado in grados %}
-                                                    <option value="{{ grado.id }}">{{ grado.nombre }}°</option>
-                                                    {% endfor %}
-                                                </select>
+                                <form>
+                                    {% csrf_token %}
+                                    <div class="row col-11 mx-auto">
+                                        <div class="col-2 mb-3">
+                                            <label for="slcGrado">Seleccionar el grado</label>
+                                            <select name="slcGrado" id="slcGrado" class="form-select">
+                                                <option value="">Seleccionar</option>
+                                                {% for grado in grados %}
+                                                <option value="{{ grado.id }}">{{ grado.nombre }}°</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="col-2 mb-3">
+                                            <label for="slcSeccion">Seleccionar el seccion</label>
+                                            <select name="slcSeccion" id="slcSeccion" class="form-select">
+                                            </select>
+                                        </div>
+                                        <div class="col-3 mb-3">
+                                            <label for="slcAlumno">Seleccionar el alumno</label>
+                                            <select name="slcAlumno" id="slcAlumno" class="form-select">
+                                            </select>
+                                        </div>
+                                        <div class="col-5 row">
+                                            <div class="col-5 mb-3 text-end">
+                                                <button class="btn btn-primary btn-lg mt-3" type="button" id="btnCalndarioMMostrar">Mostrar
+                                                    Calendario</button>
                                             </div>
-                                            <div class="col-4 mb-3">
-                                                <label for="slcSeccion">Seleccionar el seccion</label>
-                                                <select name="slcSeccion" id="slcSeccion" class="form-select">
-                                                </select>
+                                            <div class="col-4 mb-3 text-end">
+                                                <button class="btn btn-primary btn-lg mt-3" type="button" id="btnMostrarTabla" data-bs-toggle="modal" data-bs-target="#modalTblReporte">Mostrar
+                                                    tabla</button>
                                             </div>
-                                            <div class="col-4 mb-3">
-                                                <label for="slcAlumno">Seleccionar el alumno</label>
-                                                <select name="slcAlumno" id="slcAlumno" class="form-select">
-                                                </select>
-                                            </div>
-                                            <div class="col-2 mb-3 text-end">
-                                                <button class="btn-primary btn-lg mt-3 rounded-3" type="button">Mostrar</button>
+                                            <div class="col-3 mb-3 text-end">
+                                                <button class="btn btn-danger btn-lg mt-3" type="button" id="rcgFiltros">Recargar</button>
                                             </div>
                                         </div>
-                                    </form>
-                                </div>
-                                <div class="text-center col-12 mx-auto">
-                                    <div id="divCalendarioAnual">
                                         
                                     </div>
+                                </form>
+                                <div class="text-center col-11 mx-auto mt-3">
+                                    <p class="h4 mt-3 text-start d-none" id="rslAlumno">Mostrando resultados del alumno:</p>
+                                <div>
+                                
+
+                                <div class="text-center col-11 mx-auto mt-3">
+                                    <div id="divCalendarioAnual" class="d-none"></div>
                                 </div>
 
-
                             </div>
+                            <table>
+                                <thead>
+                                  <tr>
+                                    <th>Fecha</th>
+                                    <th>Hora</th>
+                                    <!-- Agregar más fechas según sea necesario -->
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td class="falta">15-06-2024</td>
+                                    <td class="tardanza">10:58</td>
+                                    <!-- Agregar más celdas según sea necesario -->
+                                  </tr>
+                                  <!-- Agregar más filas de alumnos según sea necesario -->
+                                </tbody>
+                              </table>
                         </div>
                     </div>
                 </div>
@@ -84,6 +112,37 @@
 
 
     </section>
+
+    <div class="modal fade" id="modalTblReporte" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Mostrar tabla de asistencias de mes en curso</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="col-12 mb-4">
+                    <table class="table table-hover table-bordered" id="tblAsistenciasMes">
+                      <thead>
+                        <tr><th colspan="4" class="text-center" id="nombreAlumnotbl">Estudiante</th></tr>
+                        <tr>
+                          <th>Fecha</th>
+                          <th>Hora</th>
+                          <th>Detalle</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                    </table>
+                  </div>
+                <div class="col-12 text-end">
+                    <button class="btn btn-danger btn-lg" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
 </body>
 
 {% include 'principales/footer.html' %}
@@ -92,7 +151,7 @@
 <script src="{% static 'js/index.global.min.js' %}"></script>
 
 <script>
-     
+
 </script>
 
 </html>

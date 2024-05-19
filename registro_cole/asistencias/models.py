@@ -40,7 +40,8 @@ class Alumnos(models.Model):
 
 class Asistencia(models.Model):
     id_alumno = models.ForeignKey(Alumnos, on_delete=models.CASCADE, verbose_name="Detalles del alumno")
-    fecha = models.DateField()
+    fecha = models.DateField(null=True)
+    hora = models.TimeField(null=True)
     ASISTENCIA_CHOICES = (
         (0, 'Ausente'),
         (1, 'Presente'),
