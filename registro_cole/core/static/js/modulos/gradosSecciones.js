@@ -27,7 +27,7 @@ $(document).ready(function () {
         // Si el valor del grado no está vacío, habilita la selección de sección
         if ($(this).val() !== '') {
             $('#seccionSlc').prop('disabled', false);
-            
+            $('#tablaGradosSecciones').removeClass('d-none').addClass('d-block');
         } else {
             // Si el valor del grado está vacío, deshabilita la selección de sección y elimina las opciones
             $('#seccionSlc').prop('disabled', true).empty();
@@ -108,14 +108,19 @@ function cargarSecciones2(gradoId2) {
 }
 
 function crearTablaSlc(gradoId2, seccionId) {
+
+    console.log(gradoId2, seccionId);
     
     const urlServer2 = `../../asistencias/alumnosGradosSecciones/${gradoId2}/${seccionId}`;
 
-    tblAsistencias = $('#tblgradoSecciones').DataTable({
+    tblAsistenciass = $('#tblgradoSecciones').DataTable({
 
         ajax: {
             url: urlServer2,
-            dataSrc: 'alumnos'
+            dataSrc: function (json) {
+                console.log(json); // Muestra todo el JSON que se está trayendo
+                return json.alumnos; // Asegúrate de que este es el campo correcto en tu JSON
+            }
         },
         columns: [
             { data: 'nombre_completo' },
@@ -158,7 +163,7 @@ function crearTablaSlc(gradoId2, seccionId) {
                 const res = JSON.parse(this.responseText);
                 if (res.icono == 'success') {
                     modalNuevo.hide();
-                    tblAsistencias.ajax.reload();
+                    tblAsistenciass.ajax.reload();
                     frmAlumnos.reset();
                 }
                 console.log(this.responseText);
@@ -239,7 +244,7 @@ function eliminarAlumno(idAlumno) {
                     console.log(this.responseText);
                     const res = JSON.parse(this.responseText);
                     if (res.icono == 'success') {
-                        tblAsistencias.ajax.reload();
+                        tblAsistenciass.ajax.reload();
                     }
                     console.log(this.responseText);
                     Swal.fire("Aviso", res.msg, res.icono);

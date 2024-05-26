@@ -1,7 +1,7 @@
 
+const modalReporte = new bootstrap.Modal($('#modalTblReporte'))
+
 $('document').ready(function () {
-
-
 
     gradoId = $('#slcGrado').val()
     traerSecciones(gradoId);
@@ -164,11 +164,24 @@ $('document').ready(function () {
     });
 
     $('#btnMostrarTabla').on('click', function () {
-        
+
         const urlServer = `../../reportes/asistenciasAlumno/`;
         const csrftoken = getCookie('csrftoken');
 
         const alumnoId = $('#slcAlumno').val()
+
+        if (alumnoId === "") {
+            Swal.fire({
+                title : 'Aviso',
+                text : 'Debe seleccionar un alumno',
+                icon : 'warning',
+                timer : 2000
+            })
+            return;
+            
+        }
+
+        modalReporte.show();
 
         $.ajax({
             url: urlServer,
@@ -182,6 +195,8 @@ $('document').ready(function () {
             },
             success: function (response) {
                 if (response.icono == true) {
+
+                    
 
                     console.log(response);             
                    

@@ -1,0 +1,17 @@
+regis_coleDELIMITER //
+
+CREATE PROCEDURE obtener_asistencias_mes_actual(
+    IN alumno_id INT
+)
+BEGIN
+    SELECT
+        *
+    FROM
+        a_asistencias
+    WHERE
+        id_alumno_id = alumno_id AND
+        MONTH(fecha) = MONTH(CURDATE()) AND
+        YEAR(fecha) = YEAR(CURDATE());
+END //
+
+DELIMITER ;
