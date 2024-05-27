@@ -14,31 +14,31 @@ $('document').ready(function () {
 
     $('#slcAlumno').change(function () {
         var alumnoId = $(this).val()
-        if (!alumnoId) { 
+        if (!alumnoId) {
             $('#rslAlumno').empty();
             $('#divCalendarioAnual').empty();
         }
     })
-           
+
     $('#slcGrado').change(function () {
-        
+
         $('#slcAlumno').empty();
         var gradoId = $(this).val();
         if (!gradoId) { // Si no se ha seleccionado ningún valor en #slcGrado
             // Vaciar los demás selects
-           
+
             $('#slcSeccion').prop('disabled', true).empty();
             $('#slcAlumno').prop('disabled', true).empty();
             $('#rslAlumno').empty();
             $('#divCalendarioAnual').empty();
-            
-            
+
+
             // Agrega aquí más líneas para vaciar otros selects si es necesario
         } else {
-           
+
             // Si se seleccionó un valor en #slcGrado, traer las secciones correspondientes
             traerSecciones(gradoId);
-           
+
             $('#slcSeccion').prop('disabled', false)
             $('#slcAlumno').prop('disabled', false)
             $('#divCalendarioAnual').removeClass('d-none').addClass('d-block');
@@ -73,7 +73,7 @@ $('document').ready(function () {
             }
         }
     });
-    
+
     $('#slcSeccion').select2({
         theme: 'bootstrap-5',
         language: {
@@ -103,13 +103,30 @@ $('document').ready(function () {
         }
     });
 
+    // $('#slcMes').select2({
+    //     theme: 'bootstrap-5',   
+    //     language: {
+
+    //         noResults: function () {
+
+    //             return "No hay resultado";
+    //         },
+    //         searching: function () {
+
+    //             return "Buscando..";
+    //         }
+    //     }
+    // });
+
+
+
     $('#btnCalndarioMMostrar').on('click', function () {
         const urlServer = `../../reportes/asistenciasAlumno/`;
         const csrftoken = getCookie('csrftoken');
 
         const alumnoId = $('#slcAlumno').val()
 
-        if (alumnoId === "") {
+        if (!alumnoId) { 
             Swal.fire("Aviso", "Debe seleccionar un alumno", "warning")
         } else {
             $.ajax({
@@ -165,78 +182,31 @@ $('document').ready(function () {
 
     $('#btnMostrarTabla').on('click', function () {
 
-        const urlServer = `../../reportes/asistenciasAlumno/`;
-        const csrftoken = getCookie('csrftoken');
-
         const alumnoId = $('#slcAlumno').val()
 
-        if (alumnoId === "") {
+        if (!alumnoId) { // Si no se ha seleccionado ningún valor en #slcGrado
             Swal.fire({
-                title : 'Aviso',
-                text : 'Debe seleccionar un alumno',
-                icon : 'warning',
-                timer : 2000
+                title: 'Aviso',
+                text: 'Debe seleccionar un alumno',
+                icon: 'warning',
+                timer: 2000
             })
-            return;
-            
+
+            // Agrega aquí más líneas para vaciar otros selects si es necesario
+        } else {
+
+            modalReporte.show();
+
+            const nameMes = $('#slcMes').val()
+            tablaPorMes(nameMes)
+
+            $('#slcMes').change(function () {
+                const nameMes = $(this).val();
+                tablaPorMes(nameMes)
+            })
+        
         }
-
-        modalReporte.show();
-
-        $.ajax({
-            url: urlServer,
-            method: 'POST',
-            data: {
-                alumnoId: alumnoId,
-            },
-            headers: {
-                // Adjuntar el token CSRF al encabezado de la solicitud
-                'X-CSRFToken': csrftoken
-            },
-            success: function (response) {
-                if (response.icono == true) {
-
-                    
-
-                    console.log(response);             
-                   
-                    $('#nombreAlumnotbl').text(`${response.alumno.nombre_completo} ${response.alumno.grado} ${response.alumno.seccion}`)
-
-                    let html = '';
-
-                    response.asistencias2.forEach(asistencia => {
-
-                        let detalleA = ''
-
-                        if (asistencia.detalle == 1) {
-                            detalleA = `<span class="text-success">Puntual</span>`
-                        }else {
-                            detalleA = `<span class="text-warning">Tarde</span>`
-                        }
-
-                        html += `
-                            <tr>
-                                <td>${asistencia.fecha}</td>
-                                <td>${asistencia.hora}</td>
-                                <td>${detalleA}</td>
-                            </tr>
-                        `;
-                    });
-
-                    const tblAsistenciasMes = document.querySelector('#tblAsistenciasMes tbody')
-
-                    tblAsistenciasMes.innerHTML = html
-
-                } else {
-                    console.log("Algo salió mal: " + response.error);
-                    Swal.fire("Aviso", "Debe seleccionar algun grado, seccion y alumno", "warning")
-                }
-            },
-            error: function (xhr, status, error) {
-                console.error('Error al obtener las asistencias:', error);
-            }
-        });
-
+        
     })
 })
 
@@ -244,7 +214,7 @@ $('document').ready(function () {
 function traerSecciones(gradoId) {
 
     $('#slcSeccion').empty();
-    
+
     // Si no se ha seleccionado ningún grado, bloquea la selección de sección
 
     // Realiza una petición AJAX para obtener las secciones del grado seleccionado
@@ -262,9 +232,9 @@ function traerSecciones(gradoId) {
             action: 'peticion'
         },
         success: function (response) {
-            
+
             if (response.icono == true) {
-                
+
                 response.secciones.forEach(function (seccion) {
                     $('#slcSeccion').append('<option value="' + seccion.id + '">' + seccion.nombre + '</option>');
                 });
@@ -272,7 +242,7 @@ function traerSecciones(gradoId) {
                 const seccionId = $('#slcSeccion').val()
                 mostrarAlumnos(gradoId, seccionId)
 
-                
+
 
             } else {
                 console.log("algo salio mal " + response.error);
@@ -285,7 +255,7 @@ function traerSecciones(gradoId) {
 }
 
 function mostrarAlumnos(gradoId, seccionId) {
-    
+
     // Si no se ha seleccionado ningún grado, bloquea la selección de sección
     $('#slcAlumno').empty();
     // Realiza una petición AJAX para obtener las secciones del grado seleccionado
@@ -305,11 +275,11 @@ function mostrarAlumnos(gradoId, seccionId) {
         success: function (response) {
 
             if (response.icono == true) {
-               
-                
+
+
                 console.log(response.alumnosGS);
                 let alumno2 = ''
-                response.alumnosGS.forEach(function (alumno) {                   
+                response.alumnosGS.forEach(function (alumno) {
                     alumno2 = alumno.nombre_completo
                     $('#slcAlumno').append('<option value="' + alumno.id + '">' + alumno.nombre_completo + '</option>');
                 });
@@ -317,12 +287,12 @@ function mostrarAlumnos(gradoId, seccionId) {
 
 
                 const alumnoId = $('#slcAlumno').val()
-                if (!alumnoId) { 
+                if (!alumnoId) {
                     $('#divCalendarioAnual').empty();
                     $('#rslAlumno').empty();
                 }
 
-                
+
 
             } else {
                 console.log("algo salio mal " + response.error);
@@ -336,7 +306,7 @@ function mostrarAlumnos(gradoId, seccionId) {
 }
 
 function CrearCalendarioAsistencias(datosAsistencias) {
-   
+
     $('document').ready(function () {
         var calendarEl = document.getElementById('divCalendarioAnual');
 
@@ -383,8 +353,71 @@ function CrearCalendarioAsistencias(datosAsistencias) {
     });
 }
 
+function tablaPorMes(nameMes) {
+
+    const urlServer = `../../reportes/asistenciasAlumnoAnual/`;
+    const csrftoken = getCookie('csrftoken');
+
+    const alumnoId = $('#slcAlumno').val()
+
+    $.ajax({
+        url: urlServer,
+        method: 'POST',
+        data: {
+            alumnoId: alumnoId,
+            nameMes: nameMes,
+        },
+        headers: {
+            // Adjuntar el token CSRF al encabezado de la solicitud
+            'X-CSRFToken': csrftoken
+        },
+        success: function (response) {
+            if (response.icono == true) {
+
+                console.log(response);
+
+                $('#nombreAlumnotbl').text(`${response.alumno.nombre_completo} ${response.alumno.grado} ${response.alumno.seccion}`)
+                $('#nameMes').text(`Resultados del mes de: ${response.name_mes.charAt(0).toUpperCase() + response.name_mes.slice(1)}`)
+
+                let html = '';
+
+                response.asistencias2.forEach(asistencia => {
+
+                    let detalleA = ''
+
+                    if (asistencia.detalle == 1) {
+                        detalleA = `<span class="text-success">Puntual</span>`
+                    } else {
+                        detalleA = `<span class="text-warning">Tarde</span>`
+                    }
+
+                    html += `
+                        <tr>
+                            <td>${asistencia.fecha}</td>
+                            <td>${asistencia.hora}</td>
+                            <td>${detalleA}</td>
+                        </tr>
+                    `;
+                });
+
+                const tblAsistenciasMes = document.querySelector('#tblAsistenciasMes tbody')
+
+                tblAsistenciasMes.innerHTML = html
+
+            } else {
+                console.log("Algo salió mal: " + response.error);
+                Swal.fire("Aviso", "Debe seleccionar algun mes", "warning")
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('Error al conectar con el servidor', error, status);
+        }
+    });
+}
+
+
 function getCookie(name) {
-    
+
     var cookieValue = null;
     if (document.cookie && document.cookie !== '') {
         var cookies = document.cookie.split(';');
