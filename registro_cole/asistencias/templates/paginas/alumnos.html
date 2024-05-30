@@ -42,9 +42,6 @@
                                 <button class="btn btn-primary btn-lg mb-3" data-bs-toggle="modal"
                                     data-bs-target="#modalNuevo" id="nuevo">Agregar
                                     alumno</button>
-                                <button class="btn btn-warning btn-lg mb-3" data-bs-toggle="modal"
-                                    data-bs-target="#modalTomarAsis" id="nuevo" onclick="escanearCodigoDeBarras()">Tomar
-                                    asistencia</button>
                                 <div class="table-responsive">
                                     <table class="table table-striped table-hover table-bordered" id="registroAsistencias">
                                         <thead>
@@ -207,9 +204,6 @@
 
     {% include 'principales/footer.html' %}
 
-
-
-    <script src="{% static 'js/modulos/tomarAsistencia.js' %}"></script>
     <script src="{% static 'js/modulos/asistencias.js' %}"></script>
 
 

@@ -258,7 +258,7 @@ def get_alumnos_grados_secciones(request, gradoId, seccionId):
                 grado_id = Grado.objects.get(id=gradoId)
                 seccion_id = Seccion.objects.get(id=seccionId)
                 
-                alumnos_g_s = Alumnos.objects.filter(grado = grado_id, seccion = seccion_id).order_by('apellidos')
+                alumnos_g_s = Alumnos.objects.filter(grado = grado_id, seccion = seccion_id).order_by('id')
                 
                 alumnos = [{'id': registro.id, 'nombre_completo' : registro.apellidos + ' ' + registro.nombre, 'codigo' : registro.id_unico,
                             'grado' : registro.grado.nombre, 'seccion' : registro.seccion.nombre} for registro in alumnos_g_s]
@@ -273,4 +273,114 @@ def get_alumnos_grados_secciones(request, gradoId, seccionId):
             
     except Exception as e:
         return JsonResponse({'icono' : False, 'msg' : str(e)})
+    
+def asistencias_alumnos(request):
+    
+    contexto = {
+        'titulo' : 'Tomar Asistencias',
+    }
+    
+    return render(request, "paginas/tomarAsistencia.html", contexto)
+    
         
+def get_asistencias_alumnos(request):
+    
+    if request.method == 'GET':
+        try:
+            with transaction.atomic():
+                
+                inicio = datetime.now().date()
+                final = datetime.now().date()
+                
+                fecha_inicio = inicio.strftime('%Y-%m-%d')
+                fecha_fin = final.strftime('%Y-%m-%d')
+                
+                alumnos_g_s = Asistencia.objects.filter(fecha__range=(fecha_inicio, fecha_fin)).order_by('fecha')
+                
+                alumnos = [{'id': registro.id, 'fecha' : registro.fecha.strftime("%d %B %y"), 'hora' : registro.hora.strftime("%I:%M %p"), 'nombre_completo' : registro.id_alumno.apellidos + ' ' + registro.id_alumno.nombre, 'codigo' : registro.id_alumno.id_unico,
+                            'grado_seccion' : f'{registro.id_alumno.grado.nombre}° - "{registro.id_alumno.seccion.nombre}"', 'detalle' : registro.asistencia} for registro in alumnos_g_s]
+                
+                data = {
+                    'icono' : True,
+                    'alumnos' : alumnos,
+                    'msg' : 'Datos recibidos correctamente',
+                }
+                
+                return JsonResponse(data)
+            
+        except Exception as e:
+            return JsonResponse({'icono' : False, 'msg' : str(e)})
+        
+def get_asistencia(request): 
+    if request.method == 'GET':
+        try:
+            with transaction.atomic():
+    
+                id_asistencia = request.GET.get('idAsis')
+                
+                t_asistencias =  Asistencia.objects.get(id=id_asistencia)
+                
+                asistencias = { 
+                               'id' : t_asistencias.id, 
+                               'fecha' : t_asistencias.fecha, 
+                               'hora' : t_asistencias.hora.strftime("%H:%M"), 
+                               'detalle' : t_asistencias.asistencia 
+                               }
+                
+                
+                data = {
+                    'icono' : True,
+                    'msg' : 'Datos obtenidos correctamente',
+                    'asistencias' : asistencias,
+                }
+                
+                return JsonResponse(data)
+            
+        except Exception as e:
+            return JsonResponse({'icono' : False, 'msg' : str(e)})
+
+def editar_asistencia(request):
+    if request.method == 'POST':
+        try:
+            with transaction.atomic():
+    
+                id_asistencia = request.POST.get('id')
+                detalle = request.POST.get('detalle')
+                fecha = request.POST.get('fecha')
+                hora = request.POST.get('hora')
+                
+                t_asistencias =  Asistencia.objects.get(id=id_asistencia)
+                
+                t_asistencias.asistencia = detalle
+                t_asistencias.fecha = fecha
+                t_asistencias.hora = hora
+                t_asistencias.save()
+                
+                data = {
+                    'icono' : True,
+                    'msg' : 'Asistencia actualizada correctamente',
+                }
+                
+                return JsonResponse(data)
+        except Exception as e:
+            return JsonResponse({'icono' : False, 'msg' : str(e)})
+        
+def delete_asistencia(request):
+    if request.method == 'GET':
+        try:
+            with transaction.atomic():
+    
+                id_asistencia = request.GET.get('idAsis')
+                
+                t_asistencias =  Asistencia.objects.get(id=id_asistencia)
+                
+                t_asistencias.delete()
+                
+                data = {
+                    'icono' : True,
+                    'msg' : 'Asistencia eliminada correctamente',
+                }
+                
+                return JsonResponse(data)
+        except Exception as e:
+            return JsonResponse({'icono' : False, 'msg' : str(e)})

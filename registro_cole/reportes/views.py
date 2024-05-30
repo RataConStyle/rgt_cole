@@ -128,8 +128,8 @@ def asistencias_alumno_anual(request):
             for item in resultados:
                 data_a = {
                     "id": item[0],
-                    "fecha": item[1],
-                    "hora": item[4],
+                    "fecha": item[1].strftime("%d %B %y"),
+                    "hora": item[4].strftime("%I:%M %p"),
                     "detalle": item[2],
                 }
                 asistencias2.append(data_a)

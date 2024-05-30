@@ -14,4 +14,10 @@ urlpatterns = [
     path('verSecciones/<int:gradoId>/', views.get_secciones, name='verSecciones'),
     path('gradosSecciones/', views.get_grados_secciones, name='gradosSecciones'),
     path('alumnosGradosSecciones/<int:gradoId>/<int:seccionId>/', views.get_alumnos_grados_secciones, name='alumnosGradosSecciones'),
+    path('asistenciasAlumnos/', views.asistencias_alumnos, name='asistenciasAlumnos'),
+    path('getAsistenciasAlumnos/', views.get_asistencias_alumnos, name='getAsistenciasAlumnos'),
+    path('getAsistencia/', views.get_asistencia, name='getAsistencia'),
+    path('editarAsistencia/', views.editar_asistencia, name='editarAsistencia'),
+    path('deleteAsistencia/', views.delete_asistencia, name='deleteAsistencia'),
+    
 ]

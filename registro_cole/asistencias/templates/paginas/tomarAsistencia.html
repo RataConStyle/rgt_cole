@@ -1,0 +1,147 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titulo }}</title>
+    {% include 'principales/head.html' %}
+</head>
+
+<body>
+    <section>
+        <div class="dashboard-wrapper">
+            <div class="container-fluid  dashboard-content">
+                <!-- ============================================================== -->
+                <!-- pageheader -->
+                <!-- ============================================================== -->
+
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="card">
+                            <h5 class="card-header">Tabla de muestra</h5>
+                            <div class="card-body">
+                                <button class="btn btn-warning btn-lg mb-3" data-bs-toggle="modal"
+                                    data-bs-target="#modalTomarAsis" id="nuevo" onclick="escanearCodigoDeBarras()">Tomar
+                                    asistencia</button>
+                                <div class="table-responsive">
+                                    <p class="mt-2 mb-4 fs-5">Nota: Esta tabla solo muestra las asistencias del dia de hoy</p>
+                                    <table class="table table-striped table-hover table-bordered"
+                                        id="tblAsistenciasAlumnos">
+                                        <thead>
+                                            <th>Fecha</th>
+                                            <th>Hora</th>
+                                            <th>Nombre Completo</th>
+                                            <th>Codigo</th>
+                                            <th>Grado y seccion</th>
+                                            <th>Detalle</th>
+                                            <th></th>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </section>
+</body>
+
+<div class="modal fade" id="editarAsistencia" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="titleCabeza">Asistencia del alumno</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <form>
+                    {% csrf_token %}
+                    <input readonly class="d-none" id="idAsis" name="idAsis">
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Fecha</label>
+                        <input type="date" class="form-control" id="fechaAsistencia" name="fechaAsistencia"
+                            placeholder="Codigo del alumno">
+                    </div>
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Hora</label>
+                        <input type="time" class="form-control" id="horaAsistencia" name="horaAsistencia"
+                            placeholder="Nombre del alumno">
+                    </div>
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Detalles</label>
+                        <select name="detalleAsistencia" id="detalleAsistencia" class="form-select">
+                            <option value="">-----</option>
+                            <option value="1">Temprano</option>
+                            <option value="0">Tarde</option>
+                        </select>
+                    </div>
+                    <div class="mb-3 text-end">
+                        <button type="button" class="btn btn-primary btn-lg" id="btnEditar">Actualizar</button>
+                        <button type="button" class="btn btn-danger btn-lg" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalTomarAsis" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="titleCabeza">Asistencia del alumno</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <video id="miCanvas"></video>
+                <form id="asistenciaAlumno">
+                    {% csrf_token %}
+                    <input readonly class="d-none" id="id">
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Codigo del alumno</label>
+                        <input type="text" class="form-control" id="codigoAlumno" name="codigoAlumno"
+                            placeholder="Codigo del alumno" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre Completo</label>
+                        <input type="text" class="form-control" id="nombreCompletoA" name="nombreCompletoA"
+                            placeholder="Nombre del alumno" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <p class="h4">Datos del alumno</p>
+                        <div class="container" id="datosAlumno"></div>
+
+                    </div>
+                    <div class="mb-3 text-end">
+                        <button type="submit" class="btn btn-primary btn-lg" id="btnTomar">Asistio</button>
+                        <button type="button" class="btn btn-danger btn-lg" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    const url7 = "{% url 'tomarAsistencia' 0 %}";
+</script>
+
+{% include 'principales/footer.html' %}
+
+
+<script src="{% static 'js/modulos/tomarAsistencia.js' %}"></script>
+
+
+</html>
