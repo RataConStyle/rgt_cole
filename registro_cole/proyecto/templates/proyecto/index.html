@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 
@@ -21,7 +22,133 @@
                         <div class="card">
                             <h5 class="card-header">Lo mas importante</h5>
                             <div class="card-body">
-                                
+                                <div class="row g-4">
+                                    <div class="col-md-4">
+                                        <div class="card shadow p-4 rounded-3 custom-card">
+                                            <div class="d-flex justify-content-between">
+                                                <div>
+                                                    <p class="card-title">Item 1</p>
+                                                    <p class="card-content">Contenido</p>
+                                                </div>
+                                                <div class="align-middle">
+                                                    <p class="fs-2 fw-bold text-success"><i class="fa fa-plus"></i></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card shadow p-4 rounded-3 custom-card">
+                                            <div class="d-flex justify-content-between">
+                                                <div>
+                                                    <p class="card-title">Item 2</p>
+                                                    <p class="card-content">Contenido</p>
+                                                </div>
+                                                <div class="align-middle">
+                                                    <p class="fs-2 fw-bold text-warning"><i class="fa fa-plus"></i></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card shadow p-4 rounded-3 custom-card">
+                                            <div class="d-flex justify-content-between">
+                                                <div>
+                                                    <p class="card-title">Item 3</p>
+                                                    <p class="card-content">Contenido</p>
+                                                </div>
+                                                <div class="align-middle">
+                                                    <p class="fs-2 fw-bold text-info"><i class="fa fa-plus"></i></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 row p-2 mx-auto">
+                                    <div class="col-md-6 container">
+                                        <p class="text-center fs-5">Grafico 1</p>
+                                        <div class="card">
+                                            <canvas id="myChartBar"></canvas>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 container">
+                                        <p class="text-center fs-5">Grafico 2</p>
+                                        <div class="card">
+                                            <canvas id="myChartPie"></canvas>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 container">
+                                        <p class="text-center fs-5">Grafico 3</p>
+                                        <div class="card">
+                                            <canvas id="myChartDoughnut"></canvas>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 container mt-4">
+                                        <p class="text-center fs-5">Grafico 4</p>
+                                        <div class="card">
+                                            <canvas id="myChartLine" height="200" width="800"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 row p-2 mx-auto">
+                                    <div class="col-md-6 container">
+                                        <p class="text-center fs-5">Tabla 1</p>
+                                        <table class="table table-bordered table-hover shadow">
+                                            <thead class="text-center">
+                                                <tr>
+                                                    <th>Uno #</th>
+                                                    <th>Dos #</th>
+                                                    <th>Tres #</th>
+                                                    <th>Cuatro #</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="text-center">
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>2</td>
+                                                    <td>3</td>
+                                                    <td>4</td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot class="text-center fw-bold">
+                                                 <tr>
+                                                    <th>Total</th>
+                                                    <th>Dos #</th>
+                                                    <th>Tres #</th>
+                                                    <th>Cuatro #</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-6 container">
+                                        <p class="text-center fs-5">Tabla 2</p>
+                                        <table class="table table-bordered table-hover shadow">
+                                            <thead class="text-center">
+                                                <tr>
+                                                    <th>Uno #</th>
+                                                    <th>Dos #</th>
+                                                    <th>Tres #</th>
+                                                    <th>Cuatro #</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="text-center">
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>2</td>
+                                                    <td>3</td>
+                                                    <td>4</td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot class="text-center fw-bold">
+                                                 <tr>
+                                                    <th>Total</th>
+                                                    <th>Dos #</th>
+                                                    <th>Tres #</th>
+                                                    <th>Cuatro #</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -31,6 +158,109 @@
     </section>
 </body>
 
-    {% include 'principales/footer.html' %}
+{% include 'principales/footer.html' %}
+
+<script src="{% static 'js/chart.js' %}"></script>
+
+<script>
+    const ctxBar = $('#myChartBar');
+    const ctxPie = $('#myChartPie');
+    const ctxDoughnut = $('#myChartDoughnut');
+    const ctxLine = $('#myChartLine');
+
+    new Chart(ctxBar, {
+        type: 'bar',
+        data: {
+        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        datasets: [{
+            label: '# of Votes',
+            data: [12, 19, 3, 5, 2, 3],
+            borderWidth: 1
+        }]
+        },
+        options: {
+        scales: {
+            y: {
+            beginAtZero: true
+            }
+        }
+        }
+    });
+
+    new Chart(ctxPie, {
+        type: 'pie',
+        data: {
+        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        datasets: [{
+            label: '# of Votes',
+            data: [12, 19, 3, 5, 2, 3],
+            borderWidth: 1
+        }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Chart.js Pie Chart'
+              }
+            }
+        },
+    });
+
+    new Chart(ctxDoughnut, {
+        type: 'doughnut',
+        data: {
+        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        datasets: [{
+            label: '# of Votes',
+            data: [12, 19, 3, 5, 2, 3],
+            borderWidth: 1
+        }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Chart.js Doughnut Chart'
+              }
+            }
+        },
+    });
+
+    new Chart(ctxLine, {
+        type: 'line',
+        data: {
+        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        datasets: [{
+            label: '# of Votes',
+            data: [12, 19, 3, 5, 2, 3],
+            borderWidth: 1
+        }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Chart.js Line Chart'
+              }
+            }
+          },
+    });
+
+    
+
+</script>
 
 </html>

@@ -12,6 +12,7 @@
         - 0.7. Footer
 
    -------------------------
+   
 
  *  1. Dashboard
 
@@ -237,6 +238,31 @@ ul li {}
     font-weight: 300;
     color: #3d3f5d;
 }
+
+.custom-card {
+    background: #333;
+    color: #f1f1f1;
+    border: none;
+}
+
+.card-title {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.card-content {
+    font-size: 1em;
+}
+
+.custom-card .fa-plus {
+    transition: transform 0.3s ease;
+}
+
+.custom-card:hover .fa-plus {
+    transform: scale(1.2);
+}
+
+
 
 
 /*--------------------

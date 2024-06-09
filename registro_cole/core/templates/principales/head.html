@@ -148,19 +148,20 @@
                         <li class="nav-item dropdown nav-user">
                             <a class="nav-link nav-user-img dropdown-toggle" href="#" id="navbarDropdownMenuLink2"
                                 role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="assets/images/avatar-1.jpg" alt="" class="user-avatar-md rounded-circle">
+                                <img src="{{ imagen_colegio.url }}" alt="" class="user-avatar-md rounded-circle">
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end nav-user-dropdown"
                                 aria-labelledby="navbarDropdownMenuLink2">
                                 <li>
                                     <div class="nav-user-info">
-                                        <h5 class="mb-0 text-white nav-user-name">John Abraham </h5>
-                                        <span class="status"></span><span class="ml-2">Available</span>
+                                        {% if colegio_nombre %}
+                                        <h5 class="mb-0 text-white nav-user-name">{{ colegio_nombre }} </h5>
+                                        {% else %}
+                                        <h5 class="mb-0 text-white nav-user-name">Nombre del colegio </h5>
+                                        {% endif %}
                                     </div>
                                 </li>
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Account</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Setting</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-power-off me-2"></i>Logout</a></li>
+                                <li><a class="dropdown-item" href="#" data-bs-target="#modalCofig" data-bs-toggle="modal"><i class="fas fa-cog me-2"></i>Setting</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -478,4 +479,40 @@
             </div>
         </div>
     </div>
+
+    <div class="modal" id="modalCofig" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Cofiguracion del colegio o escuela</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="card shadow">
+                        <form>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label for="nombreEscuela" class="form-label">Nombre del director (importante)</label>
+                                    <input type="text" class="form-control" id="nombreDirector" placeholder="Nombre del director" name="nombreDirector" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="nombreEscuela" class="form-label">Nombre del colegio o escuela</label>
+                                    <input type="text" class="form-control" id="nombreEscuela" placeholder="Colegio" name="nombreEscuela" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="imagenEscuela" class="form-label">Nombre del colegio o escuela (opcional)</label>
+                                    <input type="file" class="form-control" id="imagenEscuela" placeholder="Imagen de la escuela" name="imagenEscuela">
+                                </div>
+                                <div class="mb-3 text-end">
+                                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Cancel</button>
+                                    <button class="btn btn-primary" type="button" id="btnActualizarEscuela">Actualizar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
